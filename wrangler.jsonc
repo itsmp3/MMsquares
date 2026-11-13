@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mmsquares",
+  "main": "src/worker/index.ts",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mmsquares",
+      // Replace with the id printed by `npx wrangler d1 create mmsquares`
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    // Score sync every 10 minutes during the tournament window (UTC).
+    "crons": ["*/10 * 17-31 3 *", "*/10 * 1-10 4 *"]
+  },
+  // ACCESS_TEAM, ACCESS_AUD and ADMINS are set as secrets (see README) so emails stay out of this public repo.
+  "observability": { "enabled": true }
+}

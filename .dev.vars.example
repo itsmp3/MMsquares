@@ -1,0 +1,5 @@
+# Copy to .dev.vars for local development. DEV_ADMIN_EMAIL skips Cloudflare Access locally.
+DEV_ADMIN_EMAIL=mp@example.com
+ADMINS={"mp@example.com":"MP","atm@example.com":"ATM"}
+ACCESS_TEAM=
+ACCESS_AUD=
