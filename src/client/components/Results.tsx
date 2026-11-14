@@ -1,6 +1,7 @@
 import type { Game, Pool, PublicBox } from "../../shared/types";
 import { ROUND_NAMES } from "../../shared/types";
-import { boxForCode, outcome, type Win } from "../../shared/logic";
+import { boxForCode, fmtScore, outcome, type Win } from "../../shared/logic";
+import { ScoreKey } from "./ScoreKey";
 import { boxLabel, money } from "../api";
 
 /** Games by round, newest round first, with the box each one landed on. */
@@ -12,6 +13,7 @@ export function Results({ pool, boxes, games, wins }: { pool: Pool; boxes: Publi
   const rounds = [...new Set(games.map((g) => g.round))].sort((a, b) => b - a);
   return (
     <div className="results">
+      <ScoreKey />
       {rounds.map((r) => {
         const rg = games.filter((g) => g.round === r);
         const done = rg.filter((g) => g.status === "final" || g.status === "void").length;
@@ -58,14 +60,15 @@ function GameRow({ g, pool, boxes, win, target }: { g: Game; pool: Pool; boxes: 
     right = (
       <span>
         <span className="pill live">Live</span> {g.status_detail} · currently{" "}
-        {box ? `${boxLabel(box)} (${boxes[box - 1]?.name ?? "open"})` : `code ${o.code}`}
+        <span className="code">{fmtScore(o.code)}</span>{" "}
+        {box ? <b>{boxes[box - 1]?.name ?? "Open box"}</b> : null}
       </span>
     );
   } else if (g.status === "final" && win) {
     right = (
       <span>
-        <span className="code" title="Losing digit, winning digit">{win.code}</span>{" "}
-        {win.box ? <>{boxLabel(win.box)} · <b>{win.name ?? "Open box"}</b></> : "Digits not drawn"}{" "}
+        <span className="code" title={win.box ? boxLabel(win.box) : undefined}>{fmtScore(win.code)}</span>{" "}
+        {win.box ? <b>{win.name ?? "Open box"}</b> : "Numbers not drawn yet"}{" "}
         <span className="amt">{money(win.amount)}</span>
         {win.carried > 0 && <span className="muted"> (includes {money(win.carried)} carried over)</span>}
       </span>

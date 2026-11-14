@@ -62,7 +62,7 @@ CREATE TABLE payouts (
 );
 
 -- Box-code history imported from the old spreadsheet (2018-2026).
--- code = losing team's last digit followed by the winning team's last digit, e.g. '35'.
+-- code = winning team's last digit followed by the losing team's last digit, e.g. '31' for 73-71 (shown as 3-1).
 -- Years not in this table are derived from the games table.
 CREATE TABLE history_scores (
   year   INTEGER NOT NULL,

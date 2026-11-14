@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { api, fmtDate } from "../api";
 import { ROUNDS, ROUND_NAMES, type Game } from "../../shared/types";
-import { outcome } from "../../shared/logic";
+import { fmtScore, outcome } from "../../shared/logic";
 import type { TabProps } from "./AdminApp";
 
 export function GamesTab({ state, reload }: TabProps) {
@@ -70,7 +70,7 @@ export function GamesTab({ state, reload }: TabProps) {
                     </span>
                     <span className="outcome">
                       <span className={`pill ${g.status}`}>{g.status === "void" ? "no contest" : g.status}</span>
-                      {g.status === "final" && <span className="code">{outcome(g)?.code}</span>}
+                      {g.status === "final" && <span className="code">{fmtScore(outcome(g)!.code)}</span>}
                       {g.manual ? <span className="pill" title="Edited by hand; automatic updates skip this game">🔒 manual</span> : null}
                       <button className="link" onClick={() => setEditing(g.id)}>Edit</button>
                     </span>

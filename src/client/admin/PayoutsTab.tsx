@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { api, boxLabel, fmtDate, money } from "../api";
 import { ROUND_SHORT } from "../../shared/types";
-import { nameKey, type Win } from "../../shared/logic";
+import { fmtScore, nameKey, type Win } from "../../shared/logic";
 import type { TabProps } from "./AdminApp";
 
 export function PayoutsTab({ state, wins, reload }: TabProps) {
@@ -88,7 +88,7 @@ function WinTable({ list, state, save, showName }: { list: Win[]; state: TabProp
       <table className="table compact">
         <thead>
           <tr>
-            <th>Rd</th><th>Game</th><th>Box</th>{showName && <th>Winner</th>}<th className="r">Amount</th><th>Paid by</th><th>Method</th><th>Paid</th>
+            <th>Rd</th><th>Game</th><th>Score · box</th>{showName && <th>Winner</th>}<th className="r">Amount</th><th>Paid by</th><th>Method</th><th>Paid</th>
           </tr>
         </thead>
         <tbody>
@@ -96,7 +96,7 @@ function WinTable({ list, state, save, showName }: { list: Win[]; state: TabProp
             <tr key={w.game.id}>
               <td>{ROUND_SHORT[w.game.round]}</td>
               <td className="small">{w.game.team_a} {w.game.score_a}, {w.game.team_b} {w.game.score_b}</td>
-              <td className="small"><span className="code">{w.code}</span> {w.box ? boxLabel(w.box) : ""}</td>
+              <td className="small"><span className="code">{fmtScore(w.code)}</span> {w.box ? boxLabel(w.box) : ""}</td>
               {showName && <td>{w.name}</td>}
               <td className="r">{money(w.amount)}</td>
               <td>

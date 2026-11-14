@@ -6,6 +6,7 @@ import {
   cleanName,
   computeWins,
   digitsForBox,
+  fmtScore,
   leaderboard,
   nameKey,
   outcome,
@@ -43,19 +44,20 @@ describe("names", () => {
 });
 
 describe("box codes", () => {
-  it("is losing digit then winning digit", () => {
-    // 2025 title game: Florida 65, Houston 63 -> "35"
-    expect(outcome({ team_a: "Florida", score_a: 65, team_b: "Houston", score_b: 63 })!.code).toBe("35");
-    expect(outcome({ team_a: "Purdue", score_a: 60, team_b: "UConn", score_b: 75 })!.code).toBe("05");
+  it("is winning digit then losing digit, shown with a dash", () => {
+    // 2025 title game: Florida 65, Houston 63 -> "53", shown "5-3"
+    expect(outcome({ team_a: "Florida", score_a: 65, team_b: "Houston", score_b: 63 })!.code).toBe("53");
+    expect(outcome({ team_a: "Purdue", score_a: 60, team_b: "UConn", score_b: 75 })!.code).toBe("50");
+    expect(fmtScore("31")).toBe("3-1");
   });
 
   it("maps codes to box numbers using the drawn digits", () => {
     const pool = { col_digits: [7, 1, 5, 3, 9, 2, 8, 6, 4, 0], row_digits: [5, 1, 3, 6, 8, 2, 0, 4, 7, 9] };
-    expect(boxForCode(pool, "57")).toBe(1); // top-left
-    expect(boxForCode(pool, "51")).toBe(2);
-    expect(boxForCode(pool, "90")).toBe(100);
+    expect(boxForCode(pool, "75")).toBe(1); // top-left: winner 7, loser 5
+    expect(boxForCode(pool, "15")).toBe(2);
+    expect(boxForCode(pool, "09")).toBe(100);
     expect(digitsForBox(pool, 2)).toEqual({ loser: 5, winner: 1 });
-    expect(boxForCode({ col_digits: null, row_digits: null }, "51")).toBeNull();
+    expect(boxForCode({ col_digits: null, row_digits: null }, "15")).toBeNull();
   });
 
   it("shuffles into a permutation of 0-9", () => {

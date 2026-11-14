@@ -16,7 +16,8 @@ A web app for running a 10×10 March Madness squares pool. It replaces the input
 - Boxes are numbered 1–100, left to right and top to bottom.
 - Columns are the **winning** team's last digit and rows are the **losing** team's.
 - Every game from the Round of 64 to the title game pays the box at (losing digit, winning digit). The First Four doesn't count.
-- History records each game as a two-digit code, losing digit then winning digit. For example, "35" is loser 3, winner 5. 2018–2026 is imported from the old spreadsheet, and later years build themselves from the scores.
+- A game's score is shown as the last digit of each team's points, **winner first, with a dash**: a 73-71 win is **3-1**. This keeps it separate from box numbers (Box 01–Box 100), which only say where a square sits on the grid.
+- History counts how often each score has hit. 2018–2026 is imported from the old spreadsheet, and later years build themselves from the scores.
 
 ## Built with
 

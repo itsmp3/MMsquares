@@ -205,6 +205,14 @@ button.link { background: none; border: 0; color: var(--link); cursor: pointer; 
 .request.active { border-color: var(--select); }
 .request input { flex: 1 1 200px; }
 
+.score-key {
+  display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 10px 12px; border-radius: 10px;
+  background: var(--surface-2); color: var(--text-2); font-size: 0.88rem;
+}
+.score-key b { color: var(--text); }
+.score-key .code { flex: none; margin-top: 1px; }
+.score-key.compact { background: none; padding: 0 0 8px; font-size: 0.8rem; }
+
 /* ---------- results ---------- */
 .results { display: flex; flex-direction: column; gap: 16px; }
 .games { list-style: none; margin: 0; padding: 0; }

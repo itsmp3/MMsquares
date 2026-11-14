@@ -10,9 +10,17 @@ export function nameKey(s: string | null | undefined): string {
   return cleanName(s).toLowerCase();
 }
 
-/** Two-digit code: losing team's last digit, then winning team's. "35" = loser 3, winner 5. */
-export function codeFor(loserScore: number, winnerScore: number): string {
-  return `${loserScore % 10}${winnerScore % 10}`;
+/**
+ * Two-digit code: winning team's last digit, then losing team's. A 73-71 win is "31".
+ * Shown to people with a dash ("3-1") via fmtScore so it isn't confused with box numbers.
+ */
+export function codeFor(winnerScore: number, loserScore: number): string {
+  return `${winnerScore % 10}${loserScore % 10}`;
+}
+
+/** "31" -> "3-1" (winner-loser). */
+export function fmtScore(code: string): string {
+  return `${code[0]}-${code[1]}`;
 }
 
 export interface Outcome {
@@ -34,15 +42,15 @@ export function outcome(g: Pick<Game, "score_a" | "score_b" | "team_a" | "team_b
     loserScore,
     winnerTeam: aWins ? g.team_a : g.team_b,
     loserTeam: aWins ? g.team_b : g.team_a,
-    code: codeFor(loserScore, winnerScore),
+    code: codeFor(winnerScore, loserScore),
   };
 }
 
 /** Box number (1-100) that a code lands on in a drawn pool, or null if not drawn. */
 export function boxForCode(pool: Pick<Pool, "col_digits" | "row_digits">, code: string): number | null {
   if (!pool.col_digits || !pool.row_digits) return null;
-  const loser = Number(code[0]);
-  const winner = Number(code[1]);
+  const winner = Number(code[0]);
+  const loser = Number(code[1]);
   const r = pool.row_digits.indexOf(loser);
   const c = pool.col_digits.indexOf(winner);
   if (r < 0 || c < 0) return null;

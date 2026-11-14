@@ -4,6 +4,7 @@ import { Grid } from "./components/Grid";
 import { Results } from "./components/Results";
 import { Winnings } from "./components/Winnings";
 import { History } from "./components/History";
+import { ScoreKey } from "./components/ScoreKey";
 import { Header, Tabs, useHashTab, usePoolParam } from "./components/Layout";
 import { boxForCode, computeWins, outcome } from "../shared/logic";
 import type { HistoryYear } from "../shared/types";
@@ -164,9 +165,10 @@ function GridTab({
           Numbers are drawn once the grid is full. {canRequest && "Tap open boxes to pick yours, then enter your name below."}
         </p>
       ) : (
-        <p className="note muted">
-          Numbers drawn {fmtDate(pool.drawn_at)}. Each game pays the box at (losing team's last digit, winning team's last digit).
-        </p>
+        <>
+          <p className="note muted">Numbers drawn {fmtDate(pool.drawn_at)}.</p>
+          <ScoreKey />
+        </>
       )}
       <Grid
         pool={pool}

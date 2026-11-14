@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import type { HistoryYear, Pool, PublicBox } from "../../shared/types";
 import { ROUND_NAMES } from "../../shared/types";
-import { boxForCode } from "../../shared/logic";
-import { boxLabel } from "../api";
+import { boxForCode, fmtScore } from "../../shared/logic";
+import { ScoreKey } from "./ScoreKey";
 
 // Blue sequential ramp (light -> dark); 0 hits stays on the plain surface.
 const RAMP = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"];
@@ -82,12 +82,10 @@ export function History({ years, pool, boxes }: { years: HistoryYear[]; pool?: P
       <div className="history-top">
         <section className="card">
           <h3>
-            How often each box hit{" "}
+            How often each score hit{" "}
             <span className="muted">· {sel === "all" ? `${years[0].year}–${years[years.length - 1].year}` : sel}</span>
           </h3>
-          <p className="muted small">
-            Box = losing team's last digit, then winning team's. Hover a square for details.
-          </p>
+          <ScoreKey compact />
           <div className="heat-wrap">
             <div className="axis-top">Winning digit →</div>
             <div className="axis-side">Losing digit →</div>
@@ -108,10 +106,10 @@ export function History({ years, pool, boxes }: { years: HistoryYear[]; pool?: P
           <p className="hover-line">
             {hover ? (
               <>
-                <b>{hover}</b>: losing digit {hover[0]}, winning digit {hover[1]} · {counts.get(hover) ?? 0} hit
+                <b>{fmtScore(hover)}</b>: winner ends in {hover[0]}, loser ends in {hover[1]} · {counts.get(hover) ?? 0} hit
                 {(counts.get(hover) ?? 0) === 1 ? "" : "s"}
                 {sel === "all" && <> · {((counts.get(hover) ?? 0) / nYears).toFixed(1)} per year</>}
-                {hoverOwner && <> · this year: {boxLabel(hoverOwner.n)} ({hoverOwner.name ?? "open"})</>}
+                {hoverOwner && <> · this year: {hoverOwner.name ?? "open box"}</>}
               </>
             ) : (
               <span className="muted">&nbsp;</span>
@@ -125,24 +123,24 @@ export function History({ years, pool, boxes }: { years: HistoryYear[]; pool?: P
           <ol className="plain">
             {top.map((t) => (
               <li key={t.code}>
-                <span className="code">{t.code}</span> {t.hits} hits
+                <span className="code">{fmtScore(t.code)}</span> {t.hits} hits
                 {sel === "all" && <span className="muted"> · {(t.hits / nYears).toFixed(1)}/yr</span>}
               </li>
             ))}
           </ol>
           <h4>Never hit ({never.length})</h4>
-          <p className="codes">{never.length ? never.map((c) => <span key={c} className="code">{c}</span>) : "Every box has hit."}</p>
+          <p className="codes">{never.length ? never.map((c) => <span key={c} className="code">{fmtScore(c)}</span>) : "Every box has hit."}</p>
         </section>
       </div>
 
       <section className="card">
         <div className="row-between">
-          <h3>Every box, by year</h3>
+          <h3>Every score, by year</h3>
           <label>
             Sort{" "}
             <select value={sort} onChange={(e) => setSort(e.target.value as "hits" | "code")}>
               <option value="hits">Most hits</option>
-              <option value="code">Box number</option>
+              <option value="code">Score</option>
             </select>
           </label>
         </div>
@@ -150,7 +148,7 @@ export function History({ years, pool, boxes }: { years: HistoryYear[]; pool?: P
           <table className="table compact">
             <thead>
               <tr>
-                <th>Box</th>
+                <th>Score</th>
                 {drawn && <th>This year</th>}
                 <th className="r">Total</th>
                 <th className="r">Per yr</th>
@@ -162,7 +160,7 @@ export function History({ years, pool, boxes }: { years: HistoryYear[]; pool?: P
                 const o = owner(t.code);
                 return (
                   <tr key={t.code}>
-                    <td><span className="code">{t.code}</span></td>
+                    <td><span className="code">{fmtScore(t.code)}</span></td>
                     {drawn && <td className="small">{o ? `${o.name ?? "open"}` : ""}</td>}
                     <td className="r"><b>{t.hits}</b></td>
                     <td className="r">{(t.hits / nYears).toFixed(1)}</td>
@@ -186,7 +184,7 @@ function HeatRow({ r, counts, max, hover, setHover }: { r: number; counts: Map<s
     <>
       <div className="digit row">{r}</div>
       {Array.from({ length: 10 }, (_, c) => {
-        const code = `${r}${c}`;
+        const code = `${c}${r}`; // winner digit (column), loser digit (row)
         const v = counts.get(code) ?? 0;
         const bg = rampColor(v, max);
         const dark = bg && RAMP.indexOf(bg) >= 3;
@@ -195,7 +193,7 @@ function HeatRow({ r, counts, max, hover, setHover }: { r: number; counts: Map<s
             key={c}
             className={`hcell${hover === code ? " hov" : ""}${dark ? " dark" : ""}${v === 0 ? " zero" : ""}`}
             style={bg ? { background: bg } : undefined}
-            title={`${code}: ${v} hit${v === 1 ? "" : "s"}`}
+            title={`${fmtScore(code)}: ${v} hit${v === 1 ? "" : "s"}`}
             onMouseEnter={() => setHover(code)}
             onClick={() => setHover(code)}
           >
