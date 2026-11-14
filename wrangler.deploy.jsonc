@@ -18,5 +18,9 @@
     "crons": ["*/10 * 17-31 3 *", "*/10 * 1-10 4 *"]
   },
   // ACCESS_TEAM, ACCESS_AUD and ADMINS are set as secrets (see README) so emails stay out of this public repo.
+  // Public address. workers.dev is off so the account's subdomain isn't exposed.
+  "routes": [{ "pattern": "squares.marchatmp.fyi", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false,
   "observability": { "enabled": true }
 }
