@@ -16,9 +16,11 @@ interface Props {
   clickable?: (b: PublicBox) => boolean;
   /** Extra text under the name (admin: payment info). */
   sub?: (b: PublicBox) => string | null;
+  /** Show the small box number in the corner of every square (admin). Public squares show "Box 01" only while open. */
+  alwaysShowNumbers?: boolean;
 }
 
-export function Grid({ pool, boxes, wonByBox, liveBoxes, selected, highlight, onCellClick, clickable, sub }: Props) {
+export function Grid({ pool, boxes, wonByBox, liveBoxes, selected, highlight, onCellClick, clickable, sub, alwaysShowNumbers }: Props) {
   const drawn = !!(pool.col_digits && pool.row_digits);
   const hk = nameKey(highlight);
   return (
@@ -47,6 +49,7 @@ export function Grid({ pool, boxes, wonByBox, liveBoxes, selected, highlight, on
               onCellClick={onCellClick}
               clickable={clickable}
               sub={sub}
+              alwaysShowNumbers={alwaysShowNumbers}
             />
           ))}
         </div>
@@ -56,7 +59,7 @@ export function Grid({ pool, boxes, wonByBox, liveBoxes, selected, highlight, on
 }
 
 function Row({
-  r, pool, drawn, boxes, wonByBox, liveBoxes, selected, hk, onCellClick, clickable, sub,
+  r, pool, drawn, boxes, wonByBox, liveBoxes, selected, hk, onCellClick, clickable, sub, alwaysShowNumbers,
 }: Omit<Props, "highlight"> & { r: number; drawn: boolean; hk: string }) {
   return (
     <>
@@ -97,7 +100,7 @@ function Row({
             disabled={!canClick}
             onClick={canClick ? () => onCellClick!(num) : undefined}
           >
-            <span className="num">{String(num).padStart(2, "0")}</span>
+            {alwaysShowNumbers && <span className="num">{String(num).padStart(2, "0")}</span>}
             <span className="name">{b.name ?? boxLabel(num)}</span>
             {b.status === "pending" && <span className="tag">pending</span>}
             {s && <span className="sub">{s}</span>}

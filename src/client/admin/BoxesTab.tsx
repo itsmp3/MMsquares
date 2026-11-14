@@ -40,6 +40,7 @@ export function BoxesTab({ state, wins, reload }: TabProps) {
           highlight={search}
           selected={editing ? new Set([editing]) : undefined}
           onCellClick={(n) => setEditing(n)}
+          alwaysShowNumbers
           sub={(b) => {
             const a = b as AdminBox;
             return a.status === "paid" ? [a.pay_method, a.collected_by].filter(Boolean).join(" · ") : null;
