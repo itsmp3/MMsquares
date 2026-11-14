@@ -4,8 +4,8 @@ export function ScoreKey({ compact = false }: { compact?: boolean }) {
     <p className={`score-key${compact ? " compact" : ""}`}>
       <span className="code">9-3</span>
       <span>
-        Scores use the last digit of each team's points, <b>winner first</b>: Michigan 69, UConn 63 is <b>9-3</b>.
-        {!compact && <> A square wins when the winning digit down the side and the losing digit across the top both match.</>}
+        Scores use the last digit of each team's points, <b>winner first</b>; i.e. Michigan 69, UConn 63 will display as{" "}
+        <b>9-3</b>
       </span>
     </p>
   );
