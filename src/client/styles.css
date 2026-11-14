@@ -158,17 +158,17 @@ button.link { background: none; border: 0; color: var(--link); cursor: pointer; 
 .grid-wrap {
   display: grid; grid-template-columns: 22px 1fr; grid-template-rows: auto 1fr; min-width: 760px;
 }
-.grid-wrap .axis-top { grid-column: 2; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--win); padding-bottom: 4px; }
+.grid-wrap .axis-top { grid-column: 2; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--danger); padding-bottom: 4px; }
 .grid-wrap .axis-side {
   grid-row: 2; writing-mode: vertical-rl; text-align: center;
-  font-size: 0.8rem; font-weight: 600; color: var(--danger);
+  font-size: 0.8rem; font-weight: 600; color: var(--win);
 }
 .grid { display: grid; grid-template-columns: 34px repeat(10, minmax(66px, 1fr)); gap: 3px; }
 .grid .digit {
   display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; border-radius: 6px;
 }
-.grid .digit.col { background: color-mix(in srgb, var(--win) 16%, var(--surface)); min-height: 32px; }
-.grid .digit.row { background: color-mix(in srgb, var(--danger) 14%, var(--surface)); }
+.grid .digit.col { background: color-mix(in srgb, var(--danger) 14%, var(--surface)); min-height: 32px; }
+.grid .digit.row { background: color-mix(in srgb, var(--win) 16%, var(--surface)); }
 .cell {
   position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;
   min-height: 58px; padding: 14px 4px 6px; border: 1px solid var(--border); border-radius: 6px;

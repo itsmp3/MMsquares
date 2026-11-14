@@ -172,7 +172,7 @@ function DrawCard({ state, counts, reload }: { state: TabProps["state"]; counts:
           <div>
             <h3>Numbers drawn</h3>
             <p className="muted small">
-              {fmtDate(pool.drawn_at)} · Winning (top): {pool.col_digits!.join(" ")} · Losing (side): {pool.row_digits!.join(" ")}
+              {fmtDate(pool.drawn_at)} · Winning (side): {pool.row_digits!.join(" ")} · Losing (top): {pool.col_digits!.join(" ")}
             </p>
           </div>
           <button className="btn ghost danger" onClick={undo}>Undo draw</button>

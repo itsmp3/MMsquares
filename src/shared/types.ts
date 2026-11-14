@@ -25,8 +25,8 @@ export interface Pool {
   name: string;
   buy_in: number;
   payouts: Record<string, number>;
-  col_digits: number[] | null; // winning team, across the top
-  row_digits: number[] | null; // losing team, down the side
+  col_digits: number[] | null; // losing team, across the top
+  row_digits: number[] | null; // winning team, down the side
   drawn_at: string | null;
   is_current: number;
 }

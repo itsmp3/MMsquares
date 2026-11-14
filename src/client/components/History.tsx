@@ -87,8 +87,8 @@ export function History({ years, pool, boxes }: { years: HistoryYear[]; pool?: P
           </h3>
           <ScoreKey compact />
           <div className="heat-wrap">
-            <div className="axis-top">Winning digit →</div>
-            <div className="axis-side">Losing digit →</div>
+            <div className="axis-top">Losing digit →</div>
+            <div className="axis-side">Winning digit →</div>
             <div className="heat" onMouseLeave={() => setHover(null)}>
               <div className="corner" />
               {Array.from({ length: 10 }, (_, c) => <div key={c} className="digit col">{c}</div>)}
@@ -184,7 +184,7 @@ function HeatRow({ r, counts, max, hover, setHover }: { r: number; counts: Map<s
     <>
       <div className="digit row">{r}</div>
       {Array.from({ length: 10 }, (_, c) => {
-        const code = `${c}${r}`; // winner digit (column), loser digit (row)
+        const code = `${r}${c}`; // winner digit (row), loser digit (column)
         const v = counts.get(code) ?? 0;
         const bg = rampColor(v, max);
         const dark = bg && RAMP.indexOf(bg) >= 3;

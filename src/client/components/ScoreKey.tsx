@@ -5,7 +5,7 @@ export function ScoreKey({ compact = false }: { compact?: boolean }) {
       <span className="code">9-3</span>
       <span>
         Scores use the last digit of each team's points, <b>winner first</b>: Michigan 69, UConn 63 is <b>9-3</b>.
-        {!compact && <> A square wins when the winning digit across the top and the losing digit down the side both match.</>}
+        {!compact && <> A square wins when the winning digit down the side and the losing digit across the top both match.</>}
       </span>
     </p>
   );

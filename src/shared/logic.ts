@@ -51,8 +51,8 @@ export function boxForCode(pool: Pick<Pool, "col_digits" | "row_digits">, code: 
   if (!pool.col_digits || !pool.row_digits) return null;
   const winner = Number(code[0]);
   const loser = Number(code[1]);
-  const r = pool.row_digits.indexOf(loser);
-  const c = pool.col_digits.indexOf(winner);
+  const r = pool.row_digits.indexOf(winner);
+  const c = pool.col_digits.indexOf(loser);
   if (r < 0 || c < 0) return null;
   return r * 10 + c + 1;
 }
@@ -62,7 +62,7 @@ export function digitsForBox(pool: Pick<Pool, "col_digits" | "row_digits">, num:
   if (!pool.col_digits || !pool.row_digits) return null;
   const r = Math.floor((num - 1) / 10);
   const c = (num - 1) % 10;
-  return { loser: pool.row_digits[r], winner: pool.col_digits[c] };
+  return { winner: pool.row_digits[r], loser: pool.col_digits[c] };
 }
 
 /** Uniform random permutation of 0-9 (Fisher-Yates). */

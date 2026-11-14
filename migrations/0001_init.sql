@@ -6,8 +6,8 @@ CREATE TABLE pools (
   name        TEXT    NOT NULL,
   buy_in      INTEGER NOT NULL,             -- dollars per box
   payouts     TEXT    NOT NULL,             -- JSON: {"1":25,"2":50,"3":100,"4":200,"5":400,"6":1000}
-  col_digits  TEXT,                         -- JSON array of 10 digits, winning team (across the top); NULL until drawn
-  row_digits  TEXT,                         -- JSON array of 10 digits, losing team (down the side)
+  col_digits  TEXT,                         -- JSON array of 10 digits across the top; NULL until drawn (see 0002: losing team)
+  row_digits  TEXT,                         -- JSON array of 10 digits down the side (see 0002: winning team)
   drawn_at    TEXT,
   is_current  INTEGER NOT NULL DEFAULT 0,
   created_at  TEXT    NOT NULL DEFAULT (datetime('now'))

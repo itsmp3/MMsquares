@@ -52,11 +52,13 @@ describe("box codes", () => {
   });
 
   it("maps codes to box numbers using the drawn digits", () => {
-    const pool = { col_digits: [7, 1, 5, 3, 9, 2, 8, 6, 4, 0], row_digits: [5, 1, 3, 6, 8, 2, 0, 4, 7, 9] };
+    // Rows (side) are winning digits, columns (top) are losing digits.
+    const pool = { row_digits: [7, 1, 5, 3, 9, 2, 8, 6, 4, 0], col_digits: [5, 1, 3, 6, 8, 2, 0, 4, 7, 9] };
     expect(boxForCode(pool, "75")).toBe(1); // top-left: winner 7, loser 5
-    expect(boxForCode(pool, "15")).toBe(2);
+    expect(boxForCode(pool, "71")).toBe(2); // winner 7, loser 1: next box along the top row
+    expect(boxForCode(pool, "15")).toBe(11); // winner 1: second row, first column
     expect(boxForCode(pool, "09")).toBe(100);
-    expect(digitsForBox(pool, 2)).toEqual({ loser: 5, winner: 1 });
+    expect(digitsForBox(pool, 2)).toEqual({ winner: 7, loser: 1 });
     expect(boxForCode({ col_digits: null, row_digits: null }, "15")).toBeNull();
   });
 

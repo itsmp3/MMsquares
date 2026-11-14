@@ -24,8 +24,8 @@ export function Grid({ pool, boxes, wonByBox, liveBoxes, selected, highlight, on
   return (
     <div className="grid-scroll">
       <div className="grid-wrap">
-        <div className="axis-top">Winning team →</div>
-        <div className="axis-side">Losing team →</div>
+        <div className="axis-top">Losing team →</div>
+        <div className="axis-side">Winning team →</div>
         <div className="grid" role="grid" aria-label="Squares grid">
           <div className="corner" />
           {Array.from({ length: 10 }, (_, c) => (
@@ -82,7 +82,7 @@ function Row({
           boxLabel(num),
           b.name ?? "Open",
           b.status === "pending" ? "pending approval" : b.status === "claimed" ? "not paid yet" : b.status === "paid" ? "paid" : "",
-          drawn ? `losing digit ${pool.row_digits![r]}, winning digit ${pool.col_digits![c]}` : "",
+          drawn ? `winning digit ${pool.row_digits![r]}, losing digit ${pool.col_digits![c]}` : "",
           won ? `won ${money(won)}` : "",
         ]
           .filter(Boolean)
