@@ -12,7 +12,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply mmsquares --remote",
     "db:seed-history:local": "wrangler d1 execute mmsquares --local --file seed/history.sql",
     "db:seed-history:remote": "wrangler d1 execute mmsquares --remote --file seed/history.sql",
-    "deploy": "vite build && wrangler deploy",
+    "deploy": "vite build && node scripts/inline-assets.mjs && wrangler deploy -c wrangler.deploy.jsonc",
     "cf-typegen": "wrangler types"
   },
   "dependencies": {

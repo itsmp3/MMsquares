@@ -11,8 +11,7 @@
     {
       "binding": "DB",
       "database_name": "mmsquares",
-      // Replace with the id printed by `npx wrangler d1 create mmsquares`
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "dcd89b6a-498c-483e-99a1-26b7ddd51922",
       "migrations_dir": "migrations"
     }
   ],

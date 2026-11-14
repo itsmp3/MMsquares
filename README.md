@@ -32,7 +32,7 @@ npm install
 npx wrangler login
 ```
 
-1. **Create the database**, then paste the `database_id` it prints into `wrangler.jsonc`:
+1. **Create the database**, then paste the `database_id` it prints into both `wrangler.jsonc` and `wrangler.deploy.jsonc`:
    ```bash
    npx wrangler d1 create mmsquares
    ```
@@ -45,6 +45,7 @@ npx wrangler login
    ```bash
    npm run deploy
    ```
+   This builds the site and bundles the page files into the Worker (`wrangler.deploy.jsonc`), so a deploy only needs an API token with Workers Scripts and D1 edit access.
    Then give the Worker a custom domain on a zone you own: Workers & Pages → mmsquares → Settings → Domains & Routes, for example `squares.yourdomain.com`.
 4. **Protect the admin pages with Cloudflare Access** (Zero Trust dashboard → Access → Applications → Add → Self-hosted):
    - Add two paths on your domain: `squares.yourdomain.com/admin` and `squares.yourdomain.com/api/admin`.

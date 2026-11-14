@@ -1,0 +1,22 @@
+// Production config used by `npm run deploy` (client files are inlined into the Worker).
+// Keep bindings, crons and compatibility_date in sync with wrangler.jsonc.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "mmsquares",
+  "main": "src/worker/deploy.ts",
+  "compatibility_date": "2026-11-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mmsquares",
+      "database_id": "dcd89b6a-498c-483e-99a1-26b7ddd51922",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    // Score sync every 10 minutes during the tournament window (UTC).
+    "crons": ["*/10 * 17-31 3 *", "*/10 * 1-10 4 *"]
+  },
+  // ACCESS_TEAM, ACCESS_AUD and ADMINS are set as secrets (see README) so emails stay out of this public repo.
+  "observability": { "enabled": true }
+}
