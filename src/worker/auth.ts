@@ -41,7 +41,10 @@ export async function getAdmin(req: Request, env: Env): Promise<Admin | null> {
     const email = env.DEV_ADMIN_EMAIL.toLowerCase();
     return { email, label: admins[email] ?? null };
   }
-  const token = req.headers.get("Cf-Access-Jwt-Assertion");
+  // Access adds this header on protected paths (/admin, /api/admin). Elsewhere (e.g. /api/me on the
+  // public page) fall back to the Access session cookie; it is verified the same way below.
+  const cookie = req.headers.get("Cookie")?.match(/(?:^|;\s*)CF_Authorization=([^;]+)/)?.[1];
+  const token = req.headers.get("Cf-Access-Jwt-Assertion") ?? cookie ?? null;
   if (!token || !env.ACCESS_TEAM || !env.ACCESS_AUD) return null;
   const issuer = `https://${env.ACCESS_TEAM}.cloudflareaccess.com`;
   if (!jwks || jwksTeam !== env.ACCESS_TEAM) {
