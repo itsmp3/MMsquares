@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { api, ApiError, boxLabel, fmtDate, getHistory, getMe, getPublicState, type PublicState } from "./api";
+import { api, ApiError, boxLabel, fmtDate, getHistory, getPublicState, type PublicState } from "./api";
 import { Grid } from "./components/Grid";
 import { Results } from "./components/Results";
 import { Winnings } from "./components/Winnings";
@@ -18,7 +18,6 @@ export function PublicApp() {
   const [poolId, setPoolId] = usePoolParam();
   const [state, setState] = useState<PublicState | null>(null);
   const [history, setHistory] = useState<HistoryYear[] | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(() => {
@@ -36,9 +35,6 @@ export function PublicApp() {
     const t = setInterval(load, 60_000);
     return () => clearInterval(t);
   }, [load]);
-  useEffect(() => {
-    getMe().then((m) => setIsAdmin(m.admin)).catch(() => {});
-  }, []);
   useEffect(() => {
     if (tab === "history" && !history) getHistory().then((h) => setHistory(h.years)).catch((e) => setError(e.message));
   }, [tab, history]);
@@ -69,7 +65,6 @@ export function PublicApp() {
         pools={state?.pools}
         poolId={pool?.id}
         onPool={(id) => setPoolId(id)}
-        right={isAdmin ? <a className="btn ghost" href={`/admin${location.search}`}>Admin</a> : null}
       />
       <Tabs tabs={TABS} labels={LABELS} tab={tab} onTab={setTab} />
       <main>

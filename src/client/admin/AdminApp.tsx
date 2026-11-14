@@ -49,7 +49,7 @@ export function AdminApp() {
         <main>
           <div className="card">
             <h3>Admins only</h3>
-            <p>You're not signed in with an admin account. <a href="/">Back to the pool</a></p>
+            <p>You're not signed in with an admin account. <a href={publicViewHref()}>Back to the pool</a></p>
           </div>
         </main>
       </div>
@@ -65,7 +65,7 @@ export function AdminApp() {
         pools={state?.pools}
         poolId={pool?.id}
         onPool={(id) => setPoolId(id)}
-        right={<a className="btn ghost" href={`/${location.search}`}>Public view</a>}
+        right={<a className="btn ghost" href={publicViewHref()}>Public view</a>}
       />
       <Tabs tabs={TABS} labels={LABELS} tab={tab} onTab={setTab} />
       <main>
@@ -93,6 +93,11 @@ export function AdminApp() {
       </main>
     </div>
   );
+}
+
+/** On admin.<domain>, /public-site redirects to the public host (see worker/deploy.ts). Locally, "/". */
+function publicViewHref() {
+  return (location.hostname.startsWith("admin.") ? "/public-site" : "/") + location.search;
 }
 
 export interface TabProps {

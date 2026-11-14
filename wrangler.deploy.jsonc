@@ -19,7 +19,12 @@
   },
   // ACCESS_TEAM, ACCESS_AUD and ADMINS are set as secrets (see README) so emails stay out of this public repo.
   // Public address. workers.dev is off so the account's subdomain isn't exposed.
-  "routes": [{ "pattern": "squares.marchatmp.fyi", "custom_domain": true }],
+  "routes": [
+    { "pattern": "squares.marchatmp.fyi", "custom_domain": true },
+    { "pattern": "admin.marchatmp.fyi", "custom_domain": true }
+  ],
+  // The admin app is served only on ADMIN_HOST (protected by Cloudflare Access).
+  "vars": { "ADMIN_HOST": "admin.marchatmp.fyi", "PUBLIC_HOST": "squares.marchatmp.fyi" },
   "workers_dev": false,
   "preview_urls": false,
   "observability": { "enabled": true }

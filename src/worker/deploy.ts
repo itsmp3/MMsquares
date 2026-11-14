@@ -21,13 +21,26 @@ function serve(path: string): Response | null {
   });
 }
 
+type DeployEnv = Env & { ADMIN_HOST?: string; PUBLIC_HOST?: string };
+
+const redirect = (to: string) => new Response(null, { status: 302, headers: { location: to } });
+
 export default {
-  async fetch(req, env, ctx) {
+  async fetch(req, env: DeployEnv, ctx) {
     const url = new URL(req.url);
+    const onAdmin = !!env.ADMIN_HOST && url.hostname === env.ADMIN_HOST;
+    if (env.ADMIN_HOST && env.PUBLIC_HOST) {
+      if (onAdmin && url.pathname === "/public-site") return redirect(`https://${env.PUBLIC_HOST}/${url.search}`);
+      if (!onAdmin) {
+        // The admin side only exists on its own host.
+        if (url.pathname === "/admin" || url.pathname.startsWith("/admin/")) return redirect(`https://${env.ADMIN_HOST}/${url.search}`);
+        if (url.pathname.startsWith("/api/admin")) return Response.json({ error: "Not found" }, { status: 404 });
+      }
+    }
     if (url.pathname.startsWith("/api/")) return app.fetch(req, env, ctx);
     if (req.method !== "GET" && req.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
     // Single-page app: unknown paths (/, /admin, ...) get index.html.
     return serve(url.pathname) ?? serve("/index.html")!;
   },
   scheduled: app.scheduled,
-} satisfies ExportedHandler<Env>;
+} satisfies ExportedHandler<DeployEnv>;

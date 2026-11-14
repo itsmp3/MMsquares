@@ -4,7 +4,7 @@ A web app for running a 10×10 March Madness squares pool. It replaces the input
 
 **Public page** (no login): the grid, live results, the winnings leaderboard and box history. Anyone can request open boxes; they show as *pending* until an admin approves them. No payment details are ever shown publicly.
 
-**Admin page** (`/admin`, Cloudflare Access login for the organizers only):
+**Admin site** (its own address, e.g. `admin.marchatmp.fyi`, behind a Cloudflare Access email-code login for the organizers only). The public site has no admin button; `/admin` on it redirects to the admin address:
 - **Boxes:** approve or reject requests, mark boxes paid (method and who collected), edit names, rename a person across all their boxes, and draw the numbers.
 - **Scores:** pulled from ESPN every 10 minutes during the tournament. You can edit any game by hand, which locks it from automatic updates, or mark it a no-contest and move its payout (by default to the championship game).
 - **Payouts:** every win, who pays it (defaults to whoever collected that box's buy-in), and whether it's been paid.
@@ -47,8 +47,8 @@ npx wrangler login
    ```
    This builds the site and bundles the page files into the Worker (`wrangler.deploy.jsonc`), so a deploy only needs an API token with Workers Scripts and D1 edit access.
    Then give the Worker a custom domain on a zone you own: Workers & Pages → mmsquares → Settings → Domains & Routes, for example `squares.yourdomain.com`.
-4. **Protect the admin pages with Cloudflare Access** (Zero Trust dashboard → Access → Applications → Add → Self-hosted):
-   - Add two paths on your domain: `squares.yourdomain.com/admin` and `squares.yourdomain.com/api/admin`.
+4. **Protect the admin site with Cloudflare Access** (Zero Trust dashboard → Access → Applications → Add → Self-hosted):
+   - Add the whole admin host, e.g. `admin.yourdomain.com` (set `ADMIN_HOST` / `PUBLIC_HOST` and both routes in `wrangler.deploy.jsonc`).
    - Add a policy: **Allow**, *Emails*, then your email and your co-organizer's.
    - For login, choose Google or the one-time PIN by email.
    - After saving, copy the application's **Audience (AUD) tag**. Your **team name** is the `<team>` in `<team>.cloudflareaccess.com` (Settings → Custom Pages).
