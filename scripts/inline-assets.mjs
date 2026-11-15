@@ -11,7 +11,10 @@ const types = {
   ".svg": "image/svg+xml",
   ".json": "application/json",
   ".txt": "text/plain; charset=utf-8",
+  ".webmanifest": "application/manifest+json",
+  ".png": "image/png",
 };
+const binary = new Set([".png"]);
 const files = {};
 function walk(dir) {
   for (const name of readdirSync(dir)) {
@@ -20,7 +23,10 @@ function walk(dir) {
     else if (!name.startsWith(".")) {
       const type = types[extname(name)];
       if (!type) throw new Error(`No content type for ${p}; add it to scripts/inline-assets.mjs`);
-      files["/" + relative(root, p).split("\\").join("/")] = { type, body: readFileSync(p, "utf8") };
+      const key = "/" + relative(root, p).split("\\").join("/");
+      files[key] = binary.has(extname(name))
+        ? { type, body: readFileSync(p).toString("base64"), base64: true }
+        : { type, body: readFileSync(p, "utf8") };
     }
   }
 }

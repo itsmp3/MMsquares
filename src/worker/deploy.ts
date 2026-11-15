@@ -5,14 +5,25 @@ import type { Env } from "./auth";
 // @ts-ignore generated at build time by scripts/inline-assets.mjs
 import files from "../../dist/inline-assets.js";
 
-type File = { type: string; body: string };
+type File = { type: string; body: string; base64?: boolean };
+
+const decoded = new Map<string, ArrayBuffer>();
+function bytes(path: string, f: File): BodyInit {
+  if (!f.base64) return f.body;
+  let b = decoded.get(path);
+  if (!b) {
+    b = Uint8Array.from(atob(f.body), (c) => c.charCodeAt(0)).buffer as ArrayBuffer;
+    decoded.set(path, b);
+  }
+  return b;
+}
 const assets = files as Record<string, File>;
 
 function serve(path: string): Response | null {
   const f = assets[path];
   if (!f) return null;
   const immutable = path.startsWith("/assets/");
-  return new Response(f.body, {
+  return new Response(bytes(path, f), {
     headers: {
       "content-type": f.type,
       "cache-control": immutable ? "public, max-age=31536000, immutable" : "no-cache",
