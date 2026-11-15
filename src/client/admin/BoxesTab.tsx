@@ -20,7 +20,6 @@ export function BoxesTab({ state, wins, reload }: TabProps) {
   return (
     <div className="stack">
       <PendingRequests state={state} reload={reload} />
-      <DrawCard state={state} counts={counts} reload={reload} />
       <section className="card">
         <div className="row-between">
           <h3>Grid</h3>
@@ -56,6 +55,7 @@ export function BoxesTab({ state, wins, reload }: TabProps) {
           reload={reload}
         />
       )}
+      <DrawCard state={state} counts={counts} reload={reload} />
       <NamesCard state={state} reload={reload} />
     </div>
   );
